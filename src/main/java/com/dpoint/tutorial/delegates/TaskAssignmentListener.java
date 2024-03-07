@@ -67,16 +67,16 @@ public class TaskAssignmentListener implements TaskListener {
                     Transport.send(message);
                     transport.close();
 
-                    LOGGER.info("Tarefa enviado para o email com sucesso,  '" + assignee + "' com endereco '" + recipient + "'.");
+                    LOGGER.info("Tarefa enviada para o email com sucesso, usuário: '" + assignee + "' com endereco '" + recipient + "'.");
 
                 } catch (Exception e) {
                     LOGGER.log(Level.WARNING, "Não foi possível enviar email", e);
                 }
             } else {
-                LOGGER.warning("Email não foi enviado " + assignee + "', usuário não tem email cadastrado.");
+                LOGGER.warning("Email não foi enviado para " + assignee + "', usuário não tem email cadastrado.");
             }
         } else {
-            LOGGER.warning("Email não enviado " + assignee + "', o usuário não está registrado no serviço de identidade.");
+            LOGGER.warning("Email não enviado para " + assignee + "', o usuário não está registrado no serviço de identidade.");
         }
     }
 }
