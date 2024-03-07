@@ -19,9 +19,12 @@ import java.util.logging.Logger;
 public class TaskAssignmentListener implements TaskListener {
 
     private static final String HOST = "smtp.gmail.com";
+    private static final String PortSMTP = "465";
+    private static final String DNS = "https://sigad.docfile.com.br";
     private static final String USER = "report@grupopositiva.com";
-
     private static final String PWD = "exwgrstcfpayzqzc";
+
+
     private final static Logger LOGGER = Logger.getLogger(TaskAssignmentListener.class.getName());
 
     @Override
@@ -38,11 +41,11 @@ public class TaskAssignmentListener implements TaskListener {
                 String recipient = user.getEmail();
                 Properties props = new Properties();
                 props.setProperty("mail.transport.protocol", "smtp");
-                props.setProperty("mail.host", "smtp.gmail.com");
+                props.setProperty("mail.host", HOST);
                 props.put("mail.smtp.auth", "true");
-                props.put("mail.smtp.port", "465");
+                props.put("mail.smtp.port", PortSMTP);
                 props.put("mail.debug", "true");
-                props.put("mail.smtp.socketFactory.port", "465");
+                props.put("mail.smtp.socketFactory.port", PortSMTP);
                 props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
                 props.put("mail.smtp.socketFactory.fallback", "false");
                 Session session = Session.getDefaultInstance(props,
@@ -60,7 +63,7 @@ public class TaskAssignmentListener implements TaskListener {
                     MimeMessage message = new MimeMessage(session);
                     message.setSender(addressFrom);
                     message.setSubject("Nova tarefa: " + delegateTask.getName());
-                    message.setContent("Uma nova tarefa foi atribuida para você, acesse aqui: http://localhost:8080/camunda/app/tasklist/default/#/task=" + taskId, "text/plain");
+                    message.setContent("Uma nova tarefa foi atribuida para você, acesse aqui:" + DNS + "/camunda/app/tasklist/default/#/task=" + taskId, "text/plain");
                     message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
 
                     transport.connect();
