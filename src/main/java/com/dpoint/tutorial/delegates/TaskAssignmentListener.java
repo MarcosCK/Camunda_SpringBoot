@@ -19,8 +19,9 @@ import java.util.logging.Logger;
 public class TaskAssignmentListener implements TaskListener {
 
     private static final String HOST = "smtp.gmail.com";
-    private static final String USER = "pentpent346@gmail.com";
-    private static final String PWD = "Pent@346";
+    private static final String USER = "report@grupopositiva.com";
+
+    private static final String PWD = "exwgrstcfpayzqzc";
     private final static Logger LOGGER = Logger.getLogger(TaskAssignmentListener.class.getName());
 
     @Override
@@ -35,14 +36,6 @@ public class TaskAssignmentListener implements TaskListener {
 
             if (user != null) {
                 String recipient = user.getEmail();
-//                Email email = new SimpleEmail();
-//                email.setCharset("utf-8");
-//                email.setHostName(HOST);
-//                email.setSmtpPort(587);
-//                email.setSSLCheckServerIdentity(true);
-//                email.setStartTLSEnabled(false);
-//                email.setAuthentication(USER, PWD);
-
                 Properties props = new Properties();
                 props.setProperty("mail.transport.protocol", "smtp");
                 props.setProperty("mail.host", "smtp.gmail.com");
@@ -61,35 +54,29 @@ public class TaskAssignmentListener implements TaskListener {
 
 
                 try {
-//                    email.setFrom("noreply@camunda.org");
-//                    email.setSubject("Task assigned: " + delegateTask.getName());
-//                    email.setMsg("Please complete: http://localhost:8085/camunda/app/tasklist/default/#/task=" + taskId);
-//                    email.addTo(recipient);
-//                    email.send();
-
                     Transport transport = session.getTransport();
                     InternetAddress addressFrom = new InternetAddress(USER);
 
                     MimeMessage message = new MimeMessage(session);
                     message.setSender(addressFrom);
-                    message.setSubject("Task assigned: " + delegateTask.getName());
-                    message.setContent("Please complete: http://localhost:8085/camunda/app/tasklist/default/#/task=" + taskId, "text/plain");
+                    message.setSubject("Nova tarefa: " + delegateTask.getName());
+                    message.setContent("Uma nova tarefa foi atribuida para você, acesse aqui: http://localhost:8080/camunda/app/tasklist/default/#/task=" + taskId, "text/plain");
                     message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
 
                     transport.connect();
                     Transport.send(message);
                     transport.close();
 
-                    LOGGER.info("Task Assignment Email successfully sent to user '" + assignee + "' with address '" + recipient + "'.");
+                    LOGGER.info("Tarefa enviado para o email com sucesso,  '" + assignee + "' com endereco '" + recipient + "'.");
 
                 } catch (Exception e) {
-                    LOGGER.log(Level.WARNING, "Could not send email to assignee", e);
+                    LOGGER.log(Level.WARNING, "Não foi possível enviar email", e);
                 }
             } else {
-                LOGGER.warning("Not sending email to user " + assignee + "', user has no email address.");
+                LOGGER.warning("Email não foi enviado " + assignee + "', usuário não tem email cadastrado.");
             }
         } else {
-            LOGGER.warning("Not sending email to user " + assignee + "', user is not enrolled with identity service.");
+            LOGGER.warning("Email não enviado " + assignee + "', o usuário não está registrado no serviço de identidade.");
         }
     }
 }
